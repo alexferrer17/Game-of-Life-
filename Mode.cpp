@@ -17,36 +17,50 @@ using namespace std;
 
 Mode::Mode(){ //runs each mode.
 
+  string firstChoice = "";
+  cout << "Do you want to provide a map [1] or choose a random grid [2]?" << '\n';
 
-    for (size_t i = 0; i < rows; ++i)
+  while(true)
+  {
+    cin >> firstChoice;
+    if (firstChoice == "1")
     {
-
-      for (size_t j = 0; j < columns; ++j)
-        {
-          if ( mode == "Classic")
-          {
-            NeighbordCheck(i, j); //checks each spot
-            controlPopulation(); //increments the population
-            copyGeneration();
-            printGrid();
-          }
-          else if (mode == "Donough")
-          {
-            NeighbordCheckDonought(i, j); //checks each spot
-            controlPopulation(); //increments the population
-            cout << "Do you want a brief pause between generations?  " << '\n';
-            printGrid();
-            copyGeneration(); //makes grid a to grid b
-          }
-          else if ( mode == "Mirror")
-          {
-            NeighbordCheckMirror(i,j);
-            controlPopulation();
-            copyGeneration();
-          }
-        }
-      }
+    provideMap();
+    break;
     }
+    else if (firstChoice == "2")
+    {
+    randomConfig();
+    break;
+    }
+    else {cout << "Try Again" << '\n';}
+  }
+  string boundryChoice  = "";
+  cout << "What boundry mode would you want to run it on? (Classic, Donough, Mirror)" << '\n';
+
+  while(true)
+  {
+    cin >> boundryChoice;
+    if(boundryChoice == "Classic")
+    {
+      classicMode(rows, columns);
+      break;
+    }
+    else if (boundryChoice == "Doughnut")
+    {
+      doughnutMode();
+      break;
+    }
+    else if (boundryChoice == "Mirror")
+    {
+      mirrorMode();
+      break;
+    }
+    else {cout << "Try Again" << '\n';}
+  }//end of while loop
+
+  }
+
 Mode::~Mode() {
 
   //DESTRUCTUR
@@ -56,17 +70,19 @@ void Mode::printGrid() {
 
     for ( int i = 0; i < rows; i++)
     {
+      '\n';
       for ( int j = 0; j < columns; j++)
       {
-        cout << a[i][j] << '\n';
+        cout << a[i][j];
       }
     }
 }
+void Mode::provideMap(){
 
-void Mode::randomConfig()
-{
-  int height;
-  int width;
+}
+void Mode::randomConfig(){
+  int rows;
+  int columns;
   float populationDensity;
   int newHeight;
   int newWidth;
@@ -76,8 +92,8 @@ void Mode::randomConfig()
   cout << "Whats the height of your grid?:" << '\n';
   while (true)
   {
-  cin >> height;
-  if (height < 0)
+  cin >> rows;
+  if (rows > 0)
   {
     break;
   }
@@ -89,8 +105,8 @@ void Mode::randomConfig()
   cout << "Whats the width of your gird?:" << '\n';
   while (true)
   {
-    cin >> width;
-    if( width > 0)
+    cin >> columns; //this should attribute the value
+    if( columns > 0)
     {break;}
     else {std::cout << "Try a valid number" << '\n';}
   }
@@ -102,11 +118,11 @@ void Mode::randomConfig()
     else{std::cout << "Invalid number try again." << '\n';}
   }//end of while.
 
-  int cellCount = height * width * populationDensity;
+  int cellCount = rows * columns * populationDensity;
   for ( int i = 0; i < cellCount; i++)
   {
-    newHeight = rand() % height;
-    newWidth = rand() % width;
+    newHeight = rand() % rows;
+    newWidth = rand() % columns;
 
     /*if ( a[newHeight][newWidth] == '-')
     {
@@ -387,14 +403,55 @@ int Mode::NeighbordCheck(int rows, int columns) {
 --------------------------------------------------------------------------------------------
 */
 
-int Mode::NeighbordCheckDonought(int rows, int columns) {
+int Mode::NeighbordCheckDoughnut() {
 
 
 }
 
-int Mode::NeighbordCheckMirror(int rows, int columns) {
+int Mode::NeighbordCheckMirror() {
 
 
+}
+
+void Mode::classicMode(int rows, int columns) {
+  cout << "Made it to Classic mode" << '\n';
+  cout << a[rows][columns] << '\n';
+  cout << "rows: " << rows << " columns: " << columns << '\n';
+  for(int i = 0; i < rows; i++ )
+  {
+    for(int j = 0; j < columns; j++)
+    {
+      NeighbordCheck(i, j); //checks each spot
+      controlPopulation(); //increments the population
+      copyGeneration();
+      printGrid(); //maybe should have a return type?
+    }
+  }
+
+}
+void Mode::mirrorMode() {
+  for(int i = 0; i < rows; i++ )
+  {
+    for(int j = 0; j < columns; j++)
+    {
+      NeighbordCheckMirror(); //checks each spot
+      controlPopulation(); //increments the population
+      copyGeneration();
+      printGrid();
+    }
+  }
+}
+void Mode::doughnutMode() {
+  for(int i = 0; i < rows; i++ )
+  {
+    for(int j = 0; j < columns; j++)
+    {
+      NeighbordCheckMirror(); //checks each spot
+      controlPopulation(); //increments the population
+      copyGeneration();
+      printGrid();
+    }
+  }
 }
 
 //second version of then generation, incorporates the results from the first one hence have to run simulation

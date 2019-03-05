@@ -25,14 +25,19 @@ public:
 
     //look into what variables to declare
 
-    void compareGrids();
+
     void randomConfig();
-    void printGrid();
+    void provideMap();
+    void compareGrids();
     void copyGeneration();
+    void printGrid();
     void controlPopulation();
     int NeighbordCheck(int, int);
-    int NeighbordCheckDonought(int, int);
-    int NeighbordCheckMirror(int, int);
+    int NeighbordCheckDoughnut();
+    int NeighbordCheckMirror();
+    void classicMode(int,int);
+    void mirrorMode();
+    void doughnutMode();
     void providegrid(); //provide grid from file
 
 
