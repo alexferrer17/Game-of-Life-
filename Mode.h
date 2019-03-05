@@ -10,8 +10,8 @@ private:
 
 public:
 
-    runModes();
-    ~runModes();
+    Mode();
+    ~Mode();
 
     string mode;
     int numOfGenerations = 0;

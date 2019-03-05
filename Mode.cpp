@@ -15,7 +15,7 @@ using namespace std;
 
 //funtion that goes trought the same grid but after simulation
 
-runModes::runModes(){ //runs each mode.
+Mode::Mode(){ //runs each mode.
 
 
     for (size_t i = 0; i < rows; ++i)
@@ -23,21 +23,23 @@ runModes::runModes(){ //runs each mode.
 
       for (size_t j = 0; j < columns; ++j)
         {
-          if ( mode == "Classic") {
+          if ( mode == "Classic")
+          {
             NeighbordCheck(i, j); //checks each spot
             controlPopulation(); //increments the population
             copyGeneration();
             printGrid();
           }
-          else if (mode == "Donough") {
+          else if (mode == "Donough")
+          {
             NeighbordCheckDonought(i, j); //checks each spot
             controlPopulation(); //increments the population
             cout << "Do you want a brief pause between generations?  " << '\n';
             printGrid();
             copyGeneration(); //makes grid a to grid b
-
           }
-          else if ( mode == "Mirror") {
+          else if ( mode == "Mirror")
+          {
             NeighbordCheckMirror(i,j);
             controlPopulation();
             copyGeneration();
@@ -45,12 +47,12 @@ runModes::runModes(){ //runs each mode.
         }
       }
     }
-runModes::~runModes() {
+Mode::~Mode() {
 
   //DESTRUCTUR
 }
 //TODO: this might beN WRONG because it shold not be a void type or the argument is wrong in the currentGeneration() method
-void runModes::printGrid() {
+void Mode::printGrid() {
 
     for ( int i = 0; i < rows; i++)
     {
@@ -61,7 +63,7 @@ void runModes::printGrid() {
     }
 }
 
-void runModes::randomConfig()
+void Mode::randomConfig()
 {
   int height;
   int width;
@@ -121,7 +123,7 @@ void runModes::randomConfig()
 
 }
 
-void runModes::copyGeneration() {
+void Mode::copyGeneration() {
 
   for(int i = 0; i < rows; i++ )
   {
@@ -132,7 +134,7 @@ void runModes::copyGeneration() {
   }
 }
 
-void runModes::controlPopulation() {
+void Mode::controlPopulation() {
 
   int population;
   if ( population <= 1) {
@@ -151,7 +153,7 @@ void runModes::controlPopulation() {
   }
 }
 
-int runModes::NeighbordCheck(int rows, int columns) {
+int Mode::NeighbordCheck(int rows, int columns) {
 
   if (columns != 0 || columns != maxColumn && rows != 0 || rows != maxRow) { //TODO: Add conditions where rows and columns are not corners
     //keeps track of the population
@@ -371,7 +373,7 @@ int runModes::NeighbordCheck(int rows, int columns) {
   }
 }*/
 
-/*void runModes::determineState(bool a[rows+1][columns+1]) {
+/*void Mode::determineState(bool a[rows+1][columns+1]) {
 
   bool b[rows+1][columns+1] = {};
   compareGrids(a,b);
@@ -385,12 +387,12 @@ int runModes::NeighbordCheck(int rows, int columns) {
 --------------------------------------------------------------------------------------------
 */
 
-int NeighbordCheckDonought(int rows, int columns) {
+int Mode::NeighbordCheckDonought(int rows, int columns) {
 
 
 }
 
-int NeighbordCheckMirror(int rows, int columns) {
+int Mode::NeighbordCheckMirror(int rows, int columns) {
 
 
 }
