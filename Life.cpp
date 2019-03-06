@@ -112,18 +112,12 @@ void Life::provideMap(){
             a[counter - 2][i] = '-';
           }
         }
-
-
-
-
       }
       counter++;
     }
   }
   inputMap.close();
 }
-
-
 
 void Life::randomConfig(){
 
@@ -181,13 +175,8 @@ void Life::randomConfig(){
   }
 }
 
-void Life::inputFile() {
-
-
-}
-
 void Life::copyGeneration() {
-
+//copies A to B
   for(int i = 0; i < rows; i++ )
   {
     for(int j = 0; j < columns; j++)
@@ -209,7 +198,7 @@ void Life::controlPopulation(int row, int col) {
     a[rows][columns] = 'X';
     //this will make one appear
   }
-  //pretend this works
+
   else if (c[row][col] >= 4) {
     a[rows][columns] = '-';
     //this will make one appear
@@ -419,25 +408,18 @@ int Life::NeighbordCheck(int row, int col) {
   }
   return population;
 }
-  //for each of the spaces that is not in any side of the grid nor any corner (col != 0, maxColumn, row =
-
-/*------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------
-*/
 
 int Life::NeighbordCheckDoughnut() {
-
+//Doughnut mode
 
 }
 
 int Life::NeighbordCheckMirror() {
-
+//MirrorMode
 
 }
 
-bool Life::ifEmpty() {
+bool Life::ifEmpty() { //checks if its empty
   for (int i = 0; i < rows; i++)
   {
     for (int j = 0; j < columns; j++)
@@ -450,7 +432,7 @@ bool Life::ifEmpty() {
   }
   return true;
 }
-bool Life::isBalance() {
+bool Life::isBalance() { //compares first grid to second
   for (int i = 0; i < rows; i++)
   {
     for (int j = 0; j < columns; j++)
@@ -500,7 +482,7 @@ void Life::mirrorMode() {
     }
   }
 }
-void Life::doughnutMode() {
+void Life::doughnutMode() { //doughnutMode
   for(int i = 0; i < rows; i++ )
   {
     for(int j = 0; j < columns; j++)
@@ -512,7 +494,3 @@ void Life::doughnutMode() {
     }
   }
 }
-
-//second version of then generation, incorporates the results from the first one hence have to run simulation
-
-//void currentGeneration2( )
