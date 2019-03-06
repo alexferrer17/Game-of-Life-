@@ -1,10 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "Mode.h"
+#include "Life.h"
 
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-  Mode simulation;
+  Life simulation;
 }
