@@ -70,19 +70,25 @@ void Mode::printGrid() {
 
     for ( int i = 0; i < rows; i++)
     {
-      '\n';
       for ( int j = 0; j < columns; j++)
       {
-        cout << a[i][j];
+        if( a[i][j] == 'X')
+        {
+          cout << "X";
+        }
+        else
+        {
+          cout <<"-";
+        }
       }
+      cout << endl;
     }
 }
 void Mode::provideMap(){
 
 }
 void Mode::randomConfig(){
-  int rows;
-  int columns;
+
   float populationDensity;
   int newHeight;
   int newWidth;
@@ -105,7 +111,7 @@ void Mode::randomConfig(){
   cout << "Whats the width of your gird?:" << '\n';
   while (true)
   {
-    cin >> columns; //this should attribute the value
+    cin >> columns; //this should attribute the value of the array
     if( columns > 0)
     {break;}
     else {std::cout << "Try a valid number" << '\n';}
@@ -114,27 +120,30 @@ void Mode::randomConfig(){
   cout << "Whats the population density?: (0/1)" << '\n';
   while (true) {
     cin >> populationDensity;
-    if (populationDensity <= 1){break;}
+    if (populationDensity <= 1.0 && populationDensity > 0.0)
+    {
+      std::cout << populationDensity << endl;
+      break;
+    }
     else{std::cout << "Invalid number try again." << '\n';}
-  }//end of while.
-
+  }//end of while
   int cellCount = rows * columns * populationDensity;
+  cout << cellCount << endl;
   for ( int i = 0; i < cellCount; i++)
   {
     newHeight = rand() % rows;
     newWidth = rand() % columns;
-
-    /*if ( a[newHeight][newWidth] == '-')
+    cout << newHeight << " " << newWidth << endl;
+    if ( a[newHeight][newWidth] == '\0')
     {
       a[newHeight][newWidth] = 'X';
+      cout << a[newHeight][newWidth] << endl;
     }
-    else { i--};*/
+    else { i--;}
   }
-
-
-{
-
 }
+
+void Mode::inputFile() {
 
 
 }
@@ -150,233 +159,254 @@ void Mode::copyGeneration() {
   }
 }
 
-void Mode::controlPopulation() {
+void Mode::controlPopulation(int row, int col) {
 
-  int population;
-  if ( population <= 1) {
+  if ( c[row][col] <= 1) {
     a[rows][columns] = '-';
       //thiss will empty the case
   }
 
-  else if (population == 3) {
+  else if (c[row][col] == 3) {
     a[rows][columns] = 'X';
     //this will make one appear
   }
   //pretend this works
-  else if (population >= 4) {
-    a[rows][columns] = 'X';
+  else if (c[row][col] >= 4) {
+    a[rows][columns] = '-';
     //this will make one appear
   }
 }
 
-int Mode::NeighbordCheck(int rows, int columns) {
+int Mode::NeighbordCheck(int row, int col) {
 
-  if (columns != 0 || columns != maxColumn && rows != 0 || rows != maxRow) { //TODO: Add conditions where rows and columns are not corners
-    //keeps track of the population
-  //each different value has to be evaluated in this scope
-    if ( a[rows-1][columns-1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows-1][columns] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows-1][columns+1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows][columns-1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows][columns+1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows+1][columns-1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows+1][columns] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows+1][columns+1] == 'X')
-    {
-      population++;
-    }
+  cout << "Made it to NeighbordCheck" << '\n';
+  cout << "This is the grid before:" << '\n';
+  cout << a[rows][columns] << '\n';
+  int population = 0;
 
-  }//for each of the spaces that is not in any side of the grid nor any corner (columns != 0, maxColumn, rows =
-
-  else if(columns == 0) {
-
-    if ( a[rows-1][columns] == 'X')
+  if(row == 0)//If the the cell is in the top side of the the grid
+  {
+    if(col == 0)//Checks if the cell is in the top left corner
     {
-      population++;
+      if(a[row + 1][col] == 'X')//cell below
+      {
+        population++;
+      }
+      if(a[row + 1][col + 1] == 'X')//cell to the bottom right
+      {
+        population++;
+      }
+      if(a[row][col + 1] == 'X')//cell to the right
+      {
+        population++;
+      }
     }
-    else if ( a[rows-1][columns+1] == 'X')
+    else if(col == maxColumn - 1)//check if the cell is at the top right corner
     {
-      population++;
+      if(a[row][col - 1] == 'X') //cell to the left
+      {
+        population++;
+      }
+      if(a[row + 1][col - 1] == 'X')//cell to the bottom left
+      {
+        population++;
+      }
+      if(a[row + 1][col] == 'X')//cell below
+      {
+        population++;
+      }
     }
-    else if ( a[rows][columns+1] == 'X')
+    else //cell is not in a corner
     {
-      population++;
+      if(a[row][col - 1] == 'X') //cell to the left
+      {
+        population++;
+      }
+      if(a[row + 1][col - 1] == 'X')//cell to the bottom left
+      {
+        population++;
+      }
+      if(a[row + 1][col] == 'X')//cell to the bottom
+      {
+        population++;
+      }
+      if(a[row + 1][col + 1] == 'X')//cell to the bottom right
+      {
+        population++;
+      }
+      if(a[row][col + 1] == 'X')//cell to the right
+      {
+        population++;
+      }
     }
-    else if ( a[rows+1][columns] == 'X')
+  }
+  else if(row == maxRow - 1) //Cell is in the bottom of the grid
+  {
+    if(col == 0)//check if the cell is at the bottom left corner
     {
-      population++;
+      if(a[row][col + 1] == 'X')//cell to the right
+      {
+        population++;
+      }
+      if(a[row - 1][col + 1] == 'X')//cell to the top right
+      {
+        population++;
+      }
+      if(a[row - 1][col] == 'X')//cell to the top
+      {
+        population++;
+      }
     }
-    else if ( a[rows+1][columns+1] == 'X')
+    else if(col == maxColumn - 1)//bottom right corner
     {
-      population++;
+      if(a[row][col - 1] == 'X')//cell to the left
+      {
+        population++;
+      }
+      if(a[row - 1][col] == 'X')//cell to the top
+      {
+        population++;
+      }
+      if(a[row - 1][col - 1] == 'X')//cell to the top left
+      {
+        population++;
+      }
     }
-
-  } //end for right left side of the grid ( columns = 0)
-
-  else if( rows == 0) {
-
-    if ( a[rows][columns-1] == 'X')
+    else//cell is not in a corner
     {
-      population++;
-    }
-    else if ( a[rows][columns+1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows+1][columns-1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows+1][columns] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows+1][columns+1] == 'X')
-    {
-      population++;
-    }
-
-  } //end of if for the first row ( rows = 0 )
-
-  else if(rows == maxRow) { //if for the corners in the right side of the grid
-
-    if ( a[rows][columns-1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows][columns+1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows-1][columns-1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows-1][columns] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows-1][columns+1] == 'X')
-    {
-      population++;
-    }
-
-  } //end of if for whole botton side of the grid (rows = maxRow)
-
-  else if(columns == maxColumn) {
-
-    if ( a[rows-1][columns] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows-1][columns-1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows][columns-1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows+1][columns] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows+1][columns-1] == 'X')
-    {
-      population++;
-    }
-
-  } //end of if for the whole right side of the grid (columns == maxColumn)
-
-  else if (rows == maxRow && columns == maxColumn) {
-
-    if ( a[rows-1][columns-1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows-1][columns] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows][columns-1] == 'X')
-    {
-      population++;
-    }
-
-  }//end of if when its the bottom right corner of the grid
-
-  else if (rows == 0 && columns==0 ) {
-
-    if ( a[rows+1][columns+1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows+1][columns] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows][columns+1] == 'X')
-    {
-      population++;
-    }
-
-  } //end of if when its the left top corner
-
-  else if (rows == maxRow && columns == 0){
-
-    if ( a[rows-1][columns] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows-1][columns+1] == 'X')
-    {
-      population++;
-    }
-    else if ( a[rows][columns+1] == 'X')
-    {
-      population++;
+      if(a[row][col - 1] == 'X')//cell to the left
+      {
+        population++;
+      }
+      if(a[row][col + 1] == 'X')//cell to the right
+      {
+        population++;
+      }
+      if(a[row - 1][col + 1] == 'X')//cell to the top right
+      {
+        population++;
+      }
+      if(a[row - 1][col] == 'X')//cell to the top
+      {
+        population++;
+      }
+      if(a[row - 1][col - 1] == 'X')//cell to the top left
+      {
+        population++;
+      }
     }
 
   }
 
-  else if (rows == 0 && columns == maxColumn) {
+  else if(col == maxColumn - 1)//cell is in the right side of the grid
+  {
+    if(a[row][col - 1] == 'X')//cell to the left
+    {
+      population++;
+    }
+    if(a[row + 1][col - 1] == 'X')//cell to the bottom left
+    {
+      population++;
+    }
+    if(a[row + 1][col] == 'X')//cell to the bottom
+    {
+      population++;
+    }
+    if(a[row - 1][col] == 'X')//cell to the top
+    {
+      population++;
+    }
+    if(a[row - 1][col - 1] == 'X')//cell to the top left
+    {
+      population++;
+    }
+  }
 
-    if ( a[rows+1][columns] == 'X')
+  else if(col == 0)//left side of the grid
+  {
+    if(a[row + 1][col] == 'X')//cell to the bottom
     {
       population++;
     }
-    else if ( a[rows+1][columns-1] == 'X')
+    if(a[row + 1][col + 1] == 'X')//cell to the bottom right
     {
       population++;
     }
-    else if ( a[rows][columns-1] == 'X')
+    if(a[row][col + 1] == 'X')//cell to the right
     {
       population++;
     }
-  } //end of if for right top corner of grid
+    if(a[row - 1][col + 1] == 'X')//cell to the top right
+    {
+      population++;
+    }
+    if(a[row - 1][col] == 'X')//cell to the top
+    {
+      population++;
+    }
+  }
 
+  else //cell is not along any of the edges of the grid
+  {
+    if(a[row][col - 1] == 'X')//cell to the left
+    {
+      population++;
+    }
+    if(a[row + 1][col - 1] == 'X')//cell to the bottom left
+    {
+      population++;
+    }
+    if(a[row + 1][col] == 'X')//cell to the bottom
+    {
+      population++;
+    }
+    if(a[row + 1][col + 1] == 'X')//cell to the bottom right
+    {
+      population++;
+    }
+    if(a[row][col + 1] == 'X')//cell to the right
+    {
+      population++;
+    }
+    if(a[row - 1][col + 1] == 'X')//cell to the top right
+    {
+      population++;
+    }
+    if(a[row - 1][col] == 'X')//cell to the top
+    {
+      population++;
+    }
+    if(a[row - 1][col - 1] == 'X')//cell to the top left
+    {
+      population++;
+    }
+  }
+  return population;
 }
+  //for each of the spaces that is not in any side of the grid nor any corner (col != 0, maxColumn, row =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*void compareGrids ( bool a[rows+1][columns+1]) {
 
@@ -413,29 +443,65 @@ int Mode::NeighbordCheckMirror() {
 
 }
 
-void Mode::classicMode(int rows, int columns) {
-  cout << "Made it to Classic mode" << '\n';
-  cout << a[rows][columns] << '\n';
-  cout << "rows: " << rows << " columns: " << columns << '\n';
-  for(int i = 0; i < rows; i++ )
+bool Mode::ifEmpty() {
+  for (int i = 0; i < rows; i++)
   {
-    for(int j = 0; j < columns; j++)
+    for (int j = 0; j < columns; j++)
     {
-      NeighbordCheck(i, j); //checks each spot
-      controlPopulation(); //increments the population
-      copyGeneration();
-      printGrid(); //maybe should have a return type?
+      if( a[i][j] == 'X' )
+      {
+        return false;
+      }
     }
   }
+  return true;
+}
+bool Mode::isBalance() {
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < columns; j++)
+    {
+      if( a[i][j] != b[i][j] )
+      {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+void Mode::classicMode(int rows, int columns) {
+  cout << "Made it to Classic mode" << '\n';
+  cout << "rows: " << rows << '\n';
+  cout << "columns: " << columns << '\n';
+  while(!isBalance() && !ifEmpty())
+  {
+  printGrid();
+  copyGeneration();//
+  for(int row = 0; row < rows; row++ )
+  {
+    for(int col = 0; col < columns; col++)
+    {
+      NeighbordCheck(row,col);
+      //a[i][j] = NeighbordCheck(i, j);
+      //checks each spot
+      controlPopulation(row,col);
+      cout << a[row][col] << '\n';
+    }
+  }
+  '\n';
+  printGrid();
+}
 
 }
+
 void Mode::mirrorMode() {
   for(int i = 0; i < rows; i++ )
   {
     for(int j = 0; j < columns; j++)
     {
       NeighbordCheckMirror(); //checks each spot
-      controlPopulation(); //increments the population
+      controlPopulation(i,j); //increments the population
       copyGeneration();
       printGrid();
     }
@@ -447,7 +513,7 @@ void Mode::doughnutMode() {
     for(int j = 0; j < columns; j++)
     {
       NeighbordCheckMirror(); //checks each spot
-      controlPopulation(); //increments the population
+      controlPopulation(i,j); //increments the population
       copyGeneration();
       printGrid();
     }

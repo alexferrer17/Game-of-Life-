@@ -22,16 +22,19 @@ public:
     int maxRow;
     char a[1000][1000]; //first grid
     char b[1000][1000]; //second grid
+    char c[1000][1000];
 
     //look into what variables to declare
 
-
+    bool ifEmpty();
+    bool isBalance();
     void randomConfig();
+    void inputFile();
     void provideMap();
     void compareGrids();
     void copyGeneration();
     void printGrid();
-    void controlPopulation();
+    void controlPopulation(int, int);
     int NeighbordCheck(int, int);
     int NeighbordCheckDoughnut();
     int NeighbordCheckMirror();
