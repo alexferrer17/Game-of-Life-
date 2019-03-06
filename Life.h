@@ -22,7 +22,7 @@ public:
     int maxRow;
     char a[1000][1000]; //first grid
     char b[1000][1000]; //second grid
-    char c[1000][1000];
+    int c[1000][1000];
 
     //look into what variables to declare
 

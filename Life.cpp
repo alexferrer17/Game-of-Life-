@@ -4,23 +4,17 @@
 #include "Life.h"
 
 using namespace std;
-//first version of grid
 
-//variables that keep track if there is an X
+//This is game of Life.
+//Making different methods that will allow the user interact with the game.
 
-
-//function that stores grid of size (does not change throughout the procces)
-//funtion that goes throught the grid size
-//implement simulation here or in the different gamemodes class?
-
-//funtion that goes trought the same grid but after simulation
 
 Life::Life(){ //runs each mode.
 
   string firstChoice = "";
   cout << "Do you want to provide a map [1] or choose a random grid [2]?" << '\n';
 
-  while(true)
+  while(true) //while loop to keep going until the user answears correc
   {
     cin >> firstChoice;
     if (firstChoice == "1")
@@ -35,10 +29,10 @@ Life::Life(){ //runs each mode.
     }
     else {cout << "Try Again" << '\n';}
   }
-  string boundryChoice  = "";
+  string boundryChoice  = ""; //temp for option
   cout << "What boundry mode would you want to run it on? (Classic, Donough, Mirror)" << '\n';
 
-  while(true)
+  while(true) //loop that chooses gamemode
   {
     cin >> boundryChoice;
     if(boundryChoice == "Classic")
@@ -65,7 +59,7 @@ Life::~Life() {
 
   //DESTRUCTUR
 }
-//TODO: this might beN WRONG because it shold not be a void type or the argument is wrong in the currentGeneration() method
+//method that prints the grid
 void Life::printGrid() {
 
     for ( int i = 0; i < rows; i++)
@@ -85,8 +79,52 @@ void Life::printGrid() {
     }
 }
 void Life::provideMap(){
+  string fileName = "";
+  std::cout << "What is the name of the file" << '\n';
+  std::cin >> fileName;
+  fstream inputMap(fileName);
+  int gridRows = 0;
+  int gridColumns = 0;
+  if(inputMap.is_open())
+  {
+    string line = "";
+    int counter = 0;
+    while (getline(inputMap, line))
+    {
+      if(counter == 0)
+      {
+        gridRows = stoi(line);
+      }
+      else if(counter == 1)
+      {
+        gridColumns = stoi(line);
+      }
+      else
+      {
+        for(int i = 0; i < line.length() - 1; i++)
+        {
+          if(line[i] == 'X') //saves the x as true
+          {
+            a[counter - 2][i] == 'X'; //writes the map to the array
+          }
+          else
+          {
+            a[counter - 2][i] = '-';
+          }
+        }
 
+
+
+
+      }
+      counter++;
+    }
+  }
+  inputMap.close();
 }
+
+
+
 void Life::randomConfig(){
 
   float populationDensity;
@@ -118,26 +156,26 @@ void Life::randomConfig(){
   }
 
   cout << "Whats the population density?: (0/1)" << '\n';
-  while (true) {
+  while (true) { //loop that asks for the density
     cin >> populationDensity;
     if (populationDensity <= 1.0 && populationDensity > 0.0)
     {
-      std::cout << populationDensity << endl;
+
       break;
     }
     else{std::cout << "Invalid number try again." << '\n';}
-  }//end of while
+  }//end of loop
   int cellCount = rows * columns * populationDensity;
-  cout << cellCount << endl;
+
   for ( int i = 0; i < cellCount; i++)
   {
     newHeight = rand() % rows;
     newWidth = rand() % columns;
-    cout << newHeight << " " << newWidth << endl;
+    //cout << newHeight << " " << newWidth << endl;
     if ( a[newHeight][newWidth] == '\0')
     {
       a[newHeight][newWidth] = 'X';
-      cout << a[newHeight][newWidth] << endl;
+      //cout << a[newHeight][newWidth] << endl;
     }
     else { i--;}
   }
@@ -161,6 +199,7 @@ void Life::copyGeneration() {
 
 void Life::controlPopulation(int row, int col) {
 
+  std::cout << c[row][col] << '\n';
   if ( c[row][col] <= 1) {
     a[rows][columns] = '-';
       //thiss will empty the case
@@ -179,9 +218,6 @@ void Life::controlPopulation(int row, int col) {
 
 int Life::NeighbordCheck(int row, int col) {
 
-  cout << "Made it to NeighbordCheck" << '\n';
-  cout << "This is the grid before:" << '\n';
-  cout << a[rows][columns] << '\n';
   int population = 0;
 
   if(row == 0)//If the the cell is in the top side of the the grid
@@ -385,48 +421,6 @@ int Life::NeighbordCheck(int row, int col) {
 }
   //for each of the spaces that is not in any side of the grid nor any corner (col != 0, maxColumn, row =
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*void compareGrids ( bool a[rows+1][columns+1]) {
-
-  for( int a = 0; a < rows; a++)
-  {
-    for ( int b =0; b < columns; b++)
-    {
-      a[a][b] = b[a][b];
-    }
-  }
-}*/
-
-/*void Life::determineState(bool a[rows+1][columns+1]) {
-
-  bool b[rows+1][columns+1] = {};
-  compareGrids(a,b);
-
-  for ( int i = 1; a )
-
-}*/
 /*------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------
@@ -471,7 +465,6 @@ bool Life::isBalance() {
 }
 
 void Life::classicMode(int rows, int columns) {
-  cout << "Made it to Classic mode" << '\n';
   cout << "rows: " << rows << '\n';
   cout << "columns: " << columns << '\n';
   while(!isBalance() && !ifEmpty())
