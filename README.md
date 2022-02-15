@@ -1,5 +1,5 @@
-# Assignment-2
-Game of Life
+
+# Game of Life
 
 Alejandro Ferrer-Peasley
 ID: 2289045
